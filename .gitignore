@@ -1,0 +1,5 @@
+Dockerfile
+test.ipynb
+.env
+.redis_env
+__pycache__
