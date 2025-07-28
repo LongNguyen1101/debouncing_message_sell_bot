@@ -1,8 +1,12 @@
 import os
 import redis
 from threading import Thread
+import os
 
-r = redis.Redis(host=os.getenv("REDIS_HOST", "localhost"), port=6379, db=0, decode_responses=False)
+REDIS_URL = os.getenv("REDIS_URL")
+
+# r = redis.Redis(host=os.getenv("REDIS_HOST", "localhost"), port=6379, db=0, decode_responses=False)
+r = redis.from_url(REDIS_URL)
 
 # disable persistence
 # For testing only
