@@ -10,13 +10,13 @@ r = redis.from_url(REDIS_URL)
 
 # disable persistence
 # For testing only
-r.config_set("save", "")
-r.config_set("appendonly", "no")
-if os.path.exists("dump.rdb"):
-    os.remove("dump.rdb")
+# r.config_set("save", "")
+# r.config_set("appendonly", "no")
+# if os.path.exists("dump.rdb"):
+#     os.remove("dump.rdb")
 
 # enable key expiration events
-r.config_set("notify-keyspace-events", "Ex")
+# r.config_set("notify-keyspace-events", "Ex")
 
 def listener():
     pubsub = r.pubsub()
