@@ -7,6 +7,7 @@ from requests import RequestException
 import requests
 
 load_dotenv(override=True)
+
 CHATBOT_URL = os.getenv("CHATBOT_URL")
 WEBHOOK_URL = os.getenv("WEBHOOK_URL_PRODUCTION")
 
@@ -62,7 +63,7 @@ def process_messages(chat_id: str):
     msgs = r.lrange(key_list, 0, -1)
     if not msgs:
         return
-    each = [m.decode('utf-8') for m in msgs]
+    each = [m for m in msgs]
     print(f">>>> Process for {chat_id}: {each}")
     
     content = ". ".join(s for s in each).strip()

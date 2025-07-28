@@ -1,8 +1,24 @@
 import redis
 import json
+import os
+from dotenv import load_dotenv
 
-r = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
-user_id = "123"
+load_dotenv()
+
+REDIS_HOST = os.getenv("REDIS_HOST")
+REDIS_PORT = os.getenv("REDIS_PORT")
+REDIS_USER_NAME = os.getenv("REDIS_USER_NAME")
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")
+
+r = redis.Redis(
+    host=REDIS_HOST,
+    port=REDIS_PORT,
+    decode_responses=True,
+    username=REDIS_USER_NAME,
+    password=REDIS_PASSWORD,
+)
+
+user_id = "1199687758"
 key = f"messages:{user_id}"
 
 msgs = r.lrange(key, 0, -1)

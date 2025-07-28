@@ -2,11 +2,22 @@ import os
 import redis
 from threading import Thread
 import os
+from dotenv import load_dotenv
 
-REDIS_URL = os.getenv("REDIS_URL")
+load_dotenv()
 
-# r = redis.Redis(host=os.getenv("REDIS_HOST", "localhost"), port=6379, db=0, decode_responses=False)
-r = redis.from_url(REDIS_URL)
+REDIS_HOST = os.getenv("REDIS_HOST")
+REDIS_PORT = os.getenv("REDIS_PORT")
+REDIS_USER_NAME = os.getenv("REDIS_USER_NAME")
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")
+
+r = redis.Redis(
+    host=REDIS_HOST,
+    port=REDIS_PORT,
+    decode_responses=True,
+    username=REDIS_USER_NAME,
+    password=REDIS_PASSWORD,
+)
 
 # disable persistence
 # For testing only
@@ -16,14 +27,14 @@ r = redis.from_url(REDIS_URL)
 #     os.remove("dump.rdb")
 
 # enable key expiration events
-# r.config_set("notify-keyspace-events", "Ex")
+r.config_set("notify-keyspace-events", "Ex")
 
 def listener():
     pubsub = r.pubsub()
     pubsub.psubscribe('__keyevent@0__:expired')
     for m in pubsub.listen():
         if m['type'] == 'pmessage':
-            exp_key = m['data'].decode()
+            exp_key = m['data']
             if exp_key.startswith("debounce:"):
                 chat_id = exp_key.split(":", 1)[1]
                 
