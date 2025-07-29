@@ -80,19 +80,19 @@ def start_restart_chatbot(chat_id: str) -> Any:
 def process_messages(chat_id: str):
     key_list = f"messages:{chat_id}"
     msgs = r.lrange(key_list, 0, -1)
+    
     if not msgs:
         return
     each = [m for m in msgs]
-    
     content = ", ".join(s for s in each).strip()
-    print(f">>>> Process for {chat_id}: {content}")
-    
     r.delete(key_list)
     
     get_uuid = mapper_uuid.get(chat_id)
     if not get_uuid:
         get_uuid = str(uuid.uuid4())
         mapper_uuid[chat_id] = get_uuid
+        
+    print(f">>>> Process for {chat_id}: {content} | uuid: {get_uuid}")
     
     if content == "/restart" or content == "/start":
         print(f">>>> Old uuid: {get_uuid}")
