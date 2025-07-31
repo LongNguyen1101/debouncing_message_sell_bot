@@ -17,7 +17,7 @@ WEBHOOK_URL = os.getenv("WEBHOOK_URL_PRODUCTION")
 # WEBHOOK_URL = os.getenv("WEBHOOK_URL_TEST")
 mapper_uuid = {}
 
-def send_messages_to_n8n(chat_id: str, content: str) -> Any:
+def send_messages_to_n8n(chat_id: str, content: str) -> str:
     status = ""
     payload = {
         "chat_id": chat_id,
@@ -71,8 +71,9 @@ def send_messages_to_chatbot(chat_id: str, content: str, get_uuid: str) -> Any:
 def start_restart_chatbot(chat_id: str) -> Any:
     try:
         response = (
-            "Kính chào quý khách đến với cửa hàng ....\n"
-            "Quý khách muốn mua gì ạ."
+            "Chào khách, em rất vui được hỗ trợ khách. Nếu khách có thắc mắc hoặc "
+            "cần tư vấn về các sản phẩm điện tử thông minh của cửa hàng, hãy cho em biết nhé! Em rất sẵn lòng giúp đỡ.\n"
+            "(đã reset hoặc tạo mới đoạn chat).\n"
         )
         content = json.dumps({"content": response})
         status = send_messages_to_n8n(chat_id=chat_id, content=content)
@@ -150,6 +151,7 @@ def process_messages(chat_id: str):
             mapper_uuid[chat_id] = get_uuid
 
         print(f">>>> Process for {chat_id}: {content} | uuid: {get_uuid}")
+        print(f">>>> Mapper uuid: {mapper_uuid}")
 
         if content in ("/restart", "/start"):
             get_uuid = str(uuid.uuid4())
