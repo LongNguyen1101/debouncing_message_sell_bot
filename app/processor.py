@@ -49,7 +49,7 @@ def send_messages_to_chatbot(chat_id: str, content: str, get_uuid: str) -> Any:
             method="POST",
             headers=headers,
             json=payload,
-            timeout=30
+            timeout=100
         ) as source:
             for event in source:
                 print(">>>> SSE event:", event.data if hasattr(event, 'data') else event)
