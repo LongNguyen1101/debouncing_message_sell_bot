@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.router import router
+from app.api.v1.routes import router
 from fastapi.middleware.cors import CORSMiddleware
 from app.redis_client import r  # để startup listener tự chạy
 

@@ -3,3 +3,8 @@ test.ipynb
 .env
 .redis_env
 __pycache__
+app.log
+__pycache__/
+__pycache__
+*.py[cod]
+*.pyc

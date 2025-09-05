@@ -4,7 +4,7 @@ from app.debounce import push_message
 
 router = APIRouter()
 
-@router.post("/message")
+@router.post("/chat")
 def receive_message(message: Message):
     """
     API nhận tin nhắn từ user, gom tin nhắn để debounce.
@@ -17,4 +17,5 @@ def receive_message(message: Message):
         content=content,
         debounce_ms=5000
     )
+    
     return {"status": "queued", "chat_id": chat_id}
