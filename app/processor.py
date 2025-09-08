@@ -55,7 +55,7 @@ def send_messages_to_chatbot(chat_id: str, content: str) -> Any:
             timeout=100
         ) as source:
             for event in source:
-                logger.info("SSE event:", event.data if hasattr(event, 'data') else event)
+                logger.info(f"SSE event: {event.data if hasattr(event, 'data') else event}")
                 if hasattr(event, 'data'):
                     if event.data == "[DONE]":
                         logger.info("Close SSE connection")
