@@ -3,6 +3,11 @@ import threading
 import time
 import json
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+MESSAGES_QUEUE = os.getenv("MESSAGES_QUEUE")
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 
@@ -36,7 +41,7 @@ def pubsub_listener():
 threading.Thread(target=pubsub_listener, daemon=True).start()
 
 def on_new_message(user_id, msg):
-    list_key = f"messages:{user_id}"
+    list_key = f"{MESSAGES_QUEUE}:{user_id}"
     debounce_key = f"debounce:{user_id}"
     r.rpush(list_key, json.dumps(msg))
     if r.set(debounce_key, "", nx=True, px=5000):
